@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Ad;
+use App\Form\ImageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class AnnonceType extends AbstractType {
     
@@ -32,12 +34,13 @@ class AnnonceType extends AbstractType {
             ->add('coverImage', UrlType::class, $this->getConfiguration("URL de l'image", "Adresse de l'image"))
             ->add('rooms', IntegerType::class, $this->getConfiguration("Nombre de chambre", "Indiquez le nombre de chambre"))
             ->add('price', MoneyType::class, $this->getConfiguration("Prix par nuit", "Indiquez le prix par nuit"))
-            ->add('save', SubmitType::class, [
-                'label' => 'Créer la nouvelle annonce',
-                'attr' => [
-                    'class' => 'btn btn-primary'
-                    ]
-                    ]);
+            ->add('images', CollectionType::class, [
+                        'entry_type' => ImageType::class,
+                        'allow_add' => true,
+                        'allow_delete' => true
+                        ]
+                    );
+                    
                 }
                 
                 public function configureOptions(OptionsResolver $resolver)
