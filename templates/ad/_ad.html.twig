@@ -17,7 +17,7 @@
                                 <p class="card-text">
                                         {{ ad.introduction }}
                                 </p>
-                                <a href="{{ url }}" class="btn btn-secondary">Voir l'annonce</a>
+                                <a href="{{ path('ads_show', {'slug': ad.slug}) }}" class="btn btn-secondary">Voir l'annonce</a>
                                         {% if app.user and app.user == ad.author %}
         <a href="{{ path('ads_edit', {'slug': ad.slug}) }}" class="btn btn-secondary">Editer</a>
         {% endif %}
