@@ -127,7 +127,7 @@ class AdController extends AbstractController
                             public function delete(Ad $ad, ObjectManager $manager) {
                                 $manager->remove($ad);
                                 $manager->flush();
-
+                                
                                 $this->addFlash(
                                     'success',
                                     "L'annonce <strong>{$ad->getTitle()}</strong> a bien été supprimée"
@@ -136,4 +136,4 @@ class AdController extends AbstractController
                                 return $this->redirectToRoute("ads_index");
                             }
                         }
-                    
+                        
