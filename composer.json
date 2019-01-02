@@ -70,10 +70,6 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ],
-        "compile": [
-            "php bin/console cache:clear",
-            "php bin/console doctrine:fixtures:load --no-interaction --env=ALL"
         ]
     },
     "conflict": {
