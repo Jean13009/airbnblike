@@ -92,7 +92,7 @@
 		$.getJSON("/message/{{ interlocuteur.slug }}/"+ lastid, function(data){
 			var i;
 			var focus;
-			if(data[data.length-1][0].id != lastid) {
+			if(data.length > 0 && data[data.length-1][0].id != lastid) {
 			nbrmsg = data.length + nbrmsg;
 			$('.nbre_msg').html("" + nbrmsg + " Mesages");
 			if($("#message_contenu").is(":focus"))
