@@ -30,11 +30,11 @@ class AppFixtures extends Fixture
         $manager->persist($adminRole);
         
         $adminUser = new User();
-        $adminUser->setFirstName('Joe')
-        ->setLastName('Jack')
+        $adminUser->setFirstName('Jean')
+        ->setLastName('Jacques')
         ->setEmail('jo@jo.com')
         ->setHash($this->encoder->encodePassword($adminUser, 'password'))
-        ->setPicture('https://randomuser.me/api/portraits/men/55.jpg')
+        ->setPicture('http://image.noelshack.com/fichiers/2019/02/3/1547035743-telechargement.png')
         ->setIntroduction($faker->sentence())
         ->setDescription($faker->text( 200))
         ->addUserRole($adminRole);

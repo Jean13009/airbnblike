@@ -63,7 +63,6 @@ class UserController extends AbstractController {
                 
                 $user = $this->getUser();
                 $messages = $manager->getRepository(Message::class)->messagesA($user->getId(), $interlocuteur->getId(), $request->get('number'));
-                dump($messages);
                 return $this->json($messages);
             }
             
