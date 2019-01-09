@@ -40,3 +40,13 @@ div.carousel-caption {
 span.rating i {
     color: goldenrod
 }
+
+form[name="message"] {
+    width: 100%;
+}
+
+.msg_cotainer.envoyer {
+    padding-left: 11px;
+    padding-right: 11px;
+    background-color: #d9534f;
+}

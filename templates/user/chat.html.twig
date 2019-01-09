@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Discussion avec {{ interlocuteur.fullName }}
+{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="/css/message.css">
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+	<div class="row justify-content-center h-100">
+		<div class="col-md-12 col-xl-3 chat mt-5"><div class="card mb-sm-3 mb-md-0 contacts_card">
+			<div class="card-header">
+				<div class="user_info text-center"><span>Discussions en cours</span></div>
+			</div>
+			<div class="card-body contacts_body">
+				<ui class="contacts">
+					<li class="licontact">
+						<a href="{{ path("user_chat", {'slug': interlocuteur.slug}) }}"><div class="d-flex bd-highlight">
+							<div class="img_cont">
+								<img src="{{ interlocuteur.picture }}" class="rounded-circle user_img">
+								<span class="online_icon"></span>
+							</div>
+							<div class="user_info">
+								<span>{{ interlocuteur. fullName }}</span>
+								<p>{{ interlocuteur. firstName }} est en ligne</p>
+							</div>
+						</div>
+					</a></li>
+					
+				</ui>
+			</div>
+			<div class="card-footer"></div>
+		</div></div>
+		<div class="col-md-12 col-xl-6 chat mt-5">
+			<div class="card">
+				<div class="card-header msg_head">
+					<div class="d-flex bd-highlight">
+						<div class="img_cont">
+							<img src="{{ interlocuteur.picture }}" class="rounded-circle user_img">
+							<span class="online_icon"></span>
+						</div>
+						<div class="user_info">
+							<span>Discussion avec {{ interlocuteur.fullName }}</span>
+							<p class="nbre_msg" > Message(s)</p>
+						</div>
+					</div>
+					<span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+					<div class="action_menu">
+						<ul>
+							<li><i class="fas fa-user-circle"></i> View profile</li>
+							<li><i class="fas fa-users"></i> Add to close friends</li>
+							<li><i class="fas fa-plus"></i> Add to group</li>
+							<li><i class="fas fa-ban"></i> Block</li>
+						</ul>
+					</div>
+				</div>
+				<div class="card-body msg_card_body" id="fenetre">
+
+				</div>
+				<div class="card-footer">
+					<div class="input-group col">
+						{{ form_start(form) }}
+						<div name="" class="form-control type_msg">{{ form_row(form.contenu) }}</div>
+						<div class="col">
+							<button type="submit" class="btn msg_cotainer envoyer">Envoyer</button>
+							{{ form_end(form) }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script>
+<script>
+	
+	
+	
+	var lastid = 0;
+	var ancienmsg = 0;
+	var nbrmsg = 0;
+	
+	function getMessage() {
+		$.getJSON("/message/{{ interlocuteur.slug }}/"+ lastid, function(data){
+			var i;
+			var focus;
+			nbrmsg = data.length + nbrmsg;
+			$('.nbre_msg').html("" + nbrmsg + " Mesages");
+			if($("#message_contenu").is(":focus"))
+			focus = true;
+			for (i = 0; i < data.length; i++) { 
+				if(data[i].id == {{ app.user.id }}){
+					$("<div class='d-flex justify-content-start mb-4'><div class='img_cont_msg'><img src='{{ app.user.picture }}' class='rounded-circle user_img_msg'></div><div class='msg_cotainer'>" + data[i][0].contenu + "<span class='msg_time'>" + data[i][0].createdAt.replace(/(\d{4})\-(\d+)\-(\d+)T(\d+):(\d+):\d+\+\d+:\d+/, '$3/$3/$1 à $4H$5') + "</span></div></div>").appendTo("#fenetre").hide().fadeIn(300);
+				} else {
+					$("<div class='d-flex justify-content-end mb-4'><div class='msg_cotainer_send'>" + data[i][0].contenu + "<span class='msg_time_send'>" + data[i][0].createdAt.replace(/(\d{4})\-(\d+)\-(\d+)T(\d+):(\d+):\d+\+\d+:\d+/, '$3/$3/$1 à $4H$5') + "</span></div><div class='img_cont_msg'><img src='{{ interlocuteur.picture }}' class='rounded-circle user_img_msg'></div></div>").appendTo("#fenetre").hide().fadeIn(300);
+				}
+				lastid = data[i][0].id;
+			}
+			if(focus == true)
+			$("#message_contenu").focus();
+		});
+	}
+	$(document).on('submit', 'form', function(e){
+		e.preventDefault();
+		$form = $(e.target);
+		$form.ajaxSubmit({
+			type: 'post',
+			success: function(data) {
+				getMessage();
+				$('#fenetre').animate({scrollTop: 100000}, 'fast');
+			}
+		});
+		$("#message_contenu").val('');
+		$("#message_contenu").focus();
+	});
+	getMessage();
+	$( document ).ready(function() {
+		$('#fenetre').animate({scrollTop: 100000}, 'fast');
+		$(".licontact:contains('{{ interlocuteur.fullName }}')").addClass('active');
+	});
+	$('li > a').click(function() {
+		$('li').removeClass();
+		$(this).parent().addClass('active');
+	});
+	
+	const refresh = window.setInterval(getMessage, 3000);
+	
+</script>
+{% endblock %}

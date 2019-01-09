@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listes des proprétaires{% endblock %}
+
+{% block body %}
+<div class="container">
+<div class="row">
+    {% for user in users %}
+    <div class="col-md-4">
+        <div class="card bg-light mb-3">
+            <a href="{{ path('user_show', {'slug': user.slug}) }}">
+                <img src=" {{ user.picture }}" alt="Avatar" style="height: 100px; width: auto; display:block; margin: auto;">
+            </a>
+            <div class="card-body">
+                <h4 class="card-title text-center">
+                    <a href="{{ path('user_show', {'slug': user.slug}) }}">
+                        {{ user.fullName }}
+                    </a>
+                </h4>
+                <p class="card-text">
+                    {{ user.introduction }}
+                </p>
+                
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

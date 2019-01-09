@@ -98,6 +98,21 @@ class User implements UserInterface
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="User")
+     */
+    private $messages;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="messagesRecus")
+     */
+    private $messagesrecus;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastonline;
+
     public function getFullName() {
         return "{$this->firstName} {$this->lastName}";
     }
@@ -124,6 +139,8 @@ class User implements UserInterface
         $this->userRoles = new ArrayCollection();
         $this->bookings = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->messagesrecus = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -367,6 +384,80 @@ class User implements UserInterface
                 $comment->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessagesrecus(): Collection
+    {
+        return $this->messagesrecus;
+    }
+
+    public function addMessagesrecus(Message $messagesrecus): self
+    {
+        if (!$this->messagesrecus->contains($messagesrecus)) {
+            $this->messagesrecus[] = $messagesrecus;
+            $messagesrecus->setMessagesRecus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessagesrecus(Message $messagesrecus): self
+    {
+        if ($this->messagesrecus->contains($messagesrecus)) {
+            $this->messagesrecus->removeElement($messagesrecus);
+            // set the owning side to null (unless already changed)
+            if ($messagesrecus->getMessagesRecus() === $this) {
+                $messagesrecus->setMessagesRecus(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLastonline(): ?\DateTimeInterface
+    {
+        return $this->lastonline;
+    }
+
+    public function setLastonline(?\DateTimeInterface $lastonline): self
+    {
+        $this->lastonline = $lastonline;
 
         return $this;
     }
