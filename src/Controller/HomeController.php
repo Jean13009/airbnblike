@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController {
     
     /**
-    * @Route("/",  name="homepage", schemes={"https"})
+    * @Route("/",  name="homepage")
     */
     public function home() {
         return $this->render(
