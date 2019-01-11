@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -24,7 +25,7 @@ class UserController extends AbstractController {
         }
         /**
         * @Route("/chat/{slug}", name="user_chat")
-        * @IsGranted("ROLE_USER")
+        * @Security("is_granted('ROLE_USER') and slug != user.getSlug()", message="Vous ne pouvez pas vous envoyer des messages")
         */
         public function chat(User $interlocuteur, ObjectManager $manager, Request $request) {
             $user = $this->getUser();
