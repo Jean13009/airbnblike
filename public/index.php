@@ -24,6 +24,11 @@ $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
 
 // Ajout pour le HTTPS
+if($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+{
+    $_SERVER['HTTPS'] = 'on';
+    $_SERVER['SERVER_PORT'] = 443;
+}
 // Request::setTrustedProxies(array($request->server->get('REMOTE_ADDR')), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
 // Fin ajout pour le HTTPS
 $response = $kernel->handle($request);
