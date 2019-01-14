@@ -36,7 +36,7 @@ class BookingType extends ApplicationType
                 ->add('comment', TextareaType::class, [
                     'label' => false,
                     'attr' => [
-                        'placeholder' => 'Date de votre départ',
+                        'placeholder' => 'Votre commentaire',
                     ],
                     'required' => false,
                     ]);
