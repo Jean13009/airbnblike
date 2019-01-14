@@ -141,26 +141,26 @@ class AccountController extends AbstractController
                     * Mon compte
                     * 
                     * @Route("/account", name="account_index")
-                    *@IsGranted("ROLE_USER")
+                    * @IsGranted("ROLE_USER")
                     * 
                     * @return Response
                     */
-                public function myAccount() {
-                    return $this->render('user/index.html.twig', [
-                        'user' => $this->getUser()
-                    ]);
-                }
-                /**
-                 * Affiche les réservations d'un utilisateur
-                 * 
-                 * @Route("/account/bookings", name="account_bookings")
-                 * 
-                 * @return Response
-                 */
-
-                public function bookings() {
-                    return $this->render('account/bookings.html.twig');
-                }
-
-                }
-                
+                    public function myAccount() {
+                        return $this->render('user/index.html.twig', [
+                            'user' => $this->getUser()
+                            ]);
+                        }
+                        /**
+                        * Affiche les réservations d'un utilisateur
+                        * 
+                        * @Route("/account/bookings", name="account_bookings")
+                        * 
+                        * @return Response
+                        */
+                        
+                        public function bookings() {
+                            return $this->render('account/bookings.html.twig');
+                        }
+                        
+                    }
+                    
