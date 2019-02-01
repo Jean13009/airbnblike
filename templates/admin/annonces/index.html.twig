@@ -27,8 +27,8 @@
                     <td class="text-center"><span class="badge badge-primary rounded">{{ annonce.bookings | length }}</span></td>
                     <td class="text-center"><span class="badge badge-primary rounded">{{ annonce.avgRatings|number_format(1, ',', ' ') }}</span></td>
                     <td>
-                        <a href="" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                        <a href="" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        <a href="{{ path('admin_annonces_edit', {'id': annonce.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                        <a href="{{ path('admin_ad_delete', {'id': annonce.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
                 {% endfor %}

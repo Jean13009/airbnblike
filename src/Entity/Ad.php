@@ -50,7 +50,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
         
         /**
         * @ORM\Column(type="text")
-        * @Assert\Length(min=100, max=255, minMessage="Le titre doit contenir au moins 100 caractères")
+        * @Assert\Length(min=100, minMessage="Le titre doit contenir au moins 100 caractères")
         */
         private $content;
         
