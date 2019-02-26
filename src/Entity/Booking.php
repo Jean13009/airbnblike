@@ -33,7 +33,7 @@ class Booking
     /**
     * @ORM\Column(type="datetime")
     * @Assert\Date(message="Attention, la date d'arrivée doit être au bon format")
-    * @Assert\GreaterThan("today", message="La date d'arrivée doit être supérieur à la date du jour")
+    * @Assert\GreaterThan("today", message="La date d'arrivée doit être supérieure à la date du jour", groups={"front"})
     */
     private $startDate;
     
@@ -62,7 +62,8 @@ class Booking
     /**
      * Undocumented function
      *@ORM\PrePersist
-     
+     *@ORM\PreUpdate
+     *
      * @return void
      */
     public function prePersist() {

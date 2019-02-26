@@ -13,10 +13,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 class BookingType extends ApplicationType
 {
     private $transformer;
-
+    
     public function __construct(FrenchToDateTimeTransformer $transformer) {
         $this->transformer = $transformer;
-
+        
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -40,7 +40,7 @@ class BookingType extends ApplicationType
                     ],
                     'required' => false,
                     ]);
-
+                    
                     $builder->get('startDate')->addModelTransformer($this->transformer);
                     $builder->get('endDate')->addModelTransformer($this->transformer);
                 }
@@ -49,6 +49,10 @@ class BookingType extends ApplicationType
                 {
                     $resolver->setDefaults([
                         'data_class' => Booking::class,
+                        "validation_groups" => [
+                            "Default",
+                            "front"
+                            ]
                         ]);
                     }
                 }
