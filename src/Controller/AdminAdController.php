@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use App\Entity\Comment;
 use App\Form\AnnonceType;
 use App\Repository\AdRepository;
+use App\Service\PaginationService;
 use App\Repository\CommentRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -14,12 +16,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdminAdController extends AbstractController
 {
     /**
-    * @Route("/admin/annonces", name="admin_ans_index")
+    * @Route("/admin/annonces/{page}", name="admin_ans_index", requirements={"page": "\d+"})
     */
-    public function index(AdRepository $repo)
+    public function index($page = 1, PaginationService $pagination)
     {
+        $pagination->setEntityClass(Ad::class)
+                         ->setPage($page);
+
         return $this->render('admin/annonces/index.html.twig', [
-            'annonces' => $repo->findAll()
+                'pagination' => $pagination
             ]);
         }
         
@@ -79,12 +84,16 @@ class AdminAdController extends AbstractController
             * 
             * Gérer les commentaires
             * 
-            * @Route("/admin/comments/", name="admin_comments")
+            * @Route("/admin/comments/{page}", name="admin_comments", requirements={"page": "\d+"})
             * 
             */
-            public function comments(CommentRepository $comment) {
+            public function comments($page = 1, PaginationService $pagination) {
+
+                $pagination->setEntityClass(Comment::class)
+                                ->setPage($page);
+
                 return $this->render('admin/comments/comments.html.twig', [
-                    'comments' => $comment->findBy([], ['id' => 'DESC'])
+                    'pagination' => $pagination
                     ]);
                 }
                 

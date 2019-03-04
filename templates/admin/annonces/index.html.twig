@@ -4,35 +4,37 @@
 
 {% block body %}
 <div class="container-fluid">
-        <h1 class="my-5">Gestion des annonces</h1>
+    <h1 class="my-5">Gestion des annonces</h1>
+    
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th class="text-center">Réservations</th>
+                <th class="text-center">Note</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
         
-        <table class="table table-hover">
-            <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Titre</th>
-                        <th>Auteur</th>
-                        <th class="text-center">Réservations</th>
-                        <th class="text-center">Note</th>
-                        <th>Actions</th>
-                    </tr>
-            </thead>
+        <tbody>
+            {% for annonce in pagination.data %}
+            <tr>
+                <td>{{ annonce.id }}</td>
+                <td>{{ annonce.title }}</td>
+                <td><img src="{{ annonce.author.picture }}" alt="Avatar de {{ annonce.author.fullName }}" class="avatar avatar-mini mr-2">{{ annonce.author.fullName }}</td>
+                <td class="text-center"><span class="badge badge-primary rounded">{{ annonce.bookings | length }}</span></td>
+                <td class="text-center"><span class="badge badge-primary rounded">{{ annonce.avgRatings|number_format(1, ',', ' ') }}</span></td>
+                <td>
+                    <a href="{{ path('admin_annonces_edit', {'id': annonce.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                    <a href="{{ path('admin_ad_delete', {'id': annonce.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-            <tbody>
-                {% for annonce in annonces %}
-                <tr>
-                    <td>{{ annonce.id }}</td>
-                    <td>{{ annonce.title }}</td>
-                    <td><img src="{{ annonce.author.picture }}" alt="Avatar de {{ annonce.author.fullName }}" class="avatar avatar-mini mr-2">{{ annonce.author.fullName }}</td>
-                    <td class="text-center"><span class="badge badge-primary rounded">{{ annonce.bookings | length }}</span></td>
-                    <td class="text-center"><span class="badge badge-primary rounded">{{ annonce.avgRatings|number_format(1, ',', ' ') }}</span></td>
-                    <td>
-                        <a href="{{ path('admin_annonces_edit', {'id': annonce.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                        <a href="{{ path('admin_ad_delete', {'id': annonce.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    {{ pagination.display() }}
 </div>
 {% endblock %}
